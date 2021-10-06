@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">Ma Réu</string>
+    <string name="add_reunion">Ajout du Réunion</string>
+    <string name="heure_de_d_but">Heure de début :</string>
+    <string name="duree_de_la_reunionText">Durée de la réunion :</string>
+    <string-array name="Salles_array">
+            <item>Salle 1</item>
+            <item>Salle 2</item>
+            <item>Salle 3</item>
+            <item>Salle 4</item>
+            <item>Salle 5</item>
+            <item>Salle 6</item>
+            <item>Salle 7</item>
+            <item>Salle 8</item>
+            <item>Salle 9</item>
+            <item>Salle 10</item>
+        </string-array>
+    <string-array name="Salles_array_filtre">
+        <item>-</item>
+        <item>Salle 1</item>
+        <item>Salle 2</item>
+        <item>Salle 3</item>
+        <item>Salle 4</item>
+        <item>Salle 5</item>
+        <item>Salle 6</item>
+        <item>Salle 7</item>
+        <item>Salle 8</item>
+        <item>Salle 9</item>
+        <item>Salle 10</item>
+    </string-array>
+    <string-array name="Duree_Array">
+        <item>15</item>
+        <item>30</item>
+        <item>45</item>
+        <item>60</item>
+        <item>75</item>
+        <item>90</item>
+        <item>120</item>
+    </string-array>
+
+</resources>
