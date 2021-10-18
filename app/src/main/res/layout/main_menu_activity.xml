@@ -27,40 +27,32 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"/>
 
+      <DatePicker
+          android:id="@+id/filtre_date_picker"
+          android:layout_marginTop="5dp"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:datePickerMode="spinner"
+          android:layout_marginLeft="20dp"
+          android:layout_below="@id/filtre_salle_spinner"
+          android:calendarViewShown="false" />
+
         <Button
-            android:id="@+id/filtre_heure_debut"
+            android:id="@+id/filtre_button_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/filtre_salle_spinner"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="5dp"
-            android:background="@color/softBlue"
-            android:text="Heure de début" />
-        <TextView
-            android:id="@+id/text_filtre_heure_debut"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/filtre_salle_spinner"
-            android:layout_toEndOf="@id/filtre_heure_debut"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="15dp"
-            android:text="-" />
+            android:layout_below="@id/filtre_date_picker"
+            android:text="filtrer date" />
+
         <Button
-            android:id="@+id/filtre_heure_fin"
-            android:layout_below="@id/filtre_heure_debut"
+            android:id="@+id/filtre_button_salle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Heure de Fin"
-            android:layout_marginLeft="15dp"/>
-        <TextView
-            android:id="@+id/text_filtre_heure_fin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="-"
-            android:layout_below="@id/filtre_heure_debut"
-            android:layout_toEndOf="@id/filtre_heure_fin"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="15dp"/>
+            android:layout_below="@id/filtre_date_picker"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/filtre_button_date"
+            android:text="filtrer salle" />
+
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -73,17 +65,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/cell_reunion"
         />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/createReuFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_add_24"
-        android:backgroundTint="@color/red"
-        app:tint="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="10dp"
+        android:backgroundTint="@color/red"
         android:clickable="true"
-        ></com.google.android.material.floatingactionbutton.FloatingActionButton>
+        android:src="@drawable/ic_baseline_add_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@color/white"
+        tools:ignore="SpeakableTextPresentCheck"></com.google.android.material.floatingactionbutton.FloatingActionButton>
 </androidx.constraintlayout.widget.ConstraintLayout>

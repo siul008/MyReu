@@ -27,11 +27,11 @@ public class ReunionServiceTest {
     }
     @Test
     public void createReunionWithSucess()
-    { //On créer une réunion et on vérifie que la liste des réunion contient une réunion, et qu'elle correspond
+    {
         //Given
         List<String> participants = new ArrayList<>();
         participants.add("test");
-        Reunion reunion = new Reunion(1,"test","test",1,1,"30","6",participants);
+        Reunion reunion = new Reunion(1,"test","test",1,1,10,3,"30","6",participants);
 
         //When
         reuRepo.createReunion(reunion);
@@ -47,10 +47,9 @@ public class ReunionServiceTest {
         //Given
         List<String> participants = new ArrayList<>();
         participants.add("test");
-        Reunion reunion = new Reunion(1,"test","test",1,1,"30","6",participants);
+        Reunion reunion = new Reunion(1,"test","test",1,1,3,3,"30","6",participants);
         reuRepo.createReunion(reunion);
         List<Reunion> reunionList = reuRepo.getReunions();
-
 
         //When
         reuRepo.deleteReunion(reunion);
@@ -64,7 +63,7 @@ public class ReunionServiceTest {
         //Given
         List<String> participants = new ArrayList<>();
         participants.add("test");
-        Reunion reunion = new Reunion(1,"test","Salle 1",10,30,"30","6",participants);
+        Reunion reunion = new Reunion(1,"test","Salle 1",10,30,3,3,"30","6",participants);
         reuRepo.createReunion(reunion);
 
         //When
@@ -73,15 +72,14 @@ public class ReunionServiceTest {
         //Then
 
         assertFalse(result);
-
-
     }
+
     @Test public void checkIfAvailableRoom2()
     { //On créer un reunion x et on vérifie que reuRepo.checkForAvailableRoom empeche une reunion d'etre crée dans sa plage horaire
         //Given
         List<String> participants = new ArrayList<>();
         participants.add("test");
-        Reunion reunion = new Reunion(1,"test","Salle 1",10,30,"30","6",participants);
+        Reunion reunion = new Reunion(1,"test","Salle 1",10,30,3,3,"30","6",participants);
         reuRepo.createReunion(reunion);
 
         //When
@@ -90,12 +88,13 @@ public class ReunionServiceTest {
         //Then
         assertTrue(result);
     }
+
     @Test public void checkIfAvailableRoom3()
     { //On créer un reunion x et on vérifie que reuRepo.checkForAvailableRoom empeche une reunion d'etre crée dans sa plage horaire
         //Given
         List<String> participants = new ArrayList<>();
         participants.add("test");
-        Reunion reunion = new Reunion(1,"test","Salle 1",10,30,"30","6",participants);
+        Reunion reunion = new Reunion(1,"test","Salle 1",10,30,3,3,"30","6",participants);
         reuRepo.createReunion(reunion);
 
         //When
@@ -115,11 +114,11 @@ public class ReunionServiceTest {
         List<Reunion> filteredList5 = new ArrayList<>();
 
         participants.add("test");
-        Reunion reunion1 = new Reunion(1,"test","Salle 1",10,30,"30","6",participants);
+        Reunion reunion1 = new Reunion(1,"test","Salle 1",10,30,3,3,"30","6",participants);
         reuRepo.createReunion(reunion1);
-        Reunion reunion2 = new Reunion(2,"test","Salle 1",12,30,"30","6",participants);
+        Reunion reunion2 = new Reunion(2,"test","Salle 1",12,30,3,3,"30","6",participants);
         reuRepo.createReunion(reunion2);
-        Reunion reunion3 = new Reunion(3,"test","Salle 2",10,30,"30","6",participants);
+        Reunion reunion3 = new Reunion(3,"test","Salle 2",10,30,3,3,"30","6",participants);
         reuRepo.createReunion(reunion3);
 
         //When

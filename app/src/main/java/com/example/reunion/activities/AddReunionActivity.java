@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -43,6 +44,9 @@ public class AddReunionActivity extends AppCompatActivity
     String salle;
     String duree;
     String name;
+    int month;
+    int day;
+    DatePicker datePicker;
     private final List<String> participants = new ArrayList<>();
 
     @Override
@@ -55,13 +59,15 @@ public class AddReunionActivity extends AppCompatActivity
         timeInput = findViewById(R.id.time_picker);
         participantInput = findViewById(R.id.participants);
         arrowBack = findViewById(R.id.arrow_back_create_reunion);
+        datePicker = findViewById(R.id.date_picker);
 
 
 
         /*Création des Spinners */
         Spinner salleSpinner = findViewById(R.id.salle_spinner);
-        ArrayAdapter<CharSequence> salleAdapter = ArrayAdapter.createFromResource // On créer un adapter et on lui fourni notre array dans les ressources Strings
-                (this,R.array.Salles_array, android.R.layout.simple_spinner_item); /**/
+        ArrayAdapter<CharSequence> salleAdapter = ArrayAdapter.createFromResource
+                // On créer un adapter et on lui fourni notre array dans les ressources Strings
+                (this,R.array.Salles_array, android.R.layout.simple_spinner_item);
         salleAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         salleSpinner.setAdapter(salleAdapter); // On set l'adapter
         salleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -97,24 +103,16 @@ public class AddReunionActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             { // Quand on valide on appele la fonction CreateReunion et termine l'activité
-               if(sujetInput.getText().toString().isEmpty() == false && participantInput.getText().toString().isEmpty() == false
-                       && reuRepo.checkForAvailableRoom(timeInput.getCurrentHour(),timeInput.getCurrentMinute(),duree, salle))
+               if(!sujetInput.getText().toString().isEmpty() && !participantInput.getText().toString().isEmpty())
                //Si l'utilisateur a mis un sujet et participant
                {
                    onParticipantsInput(participantInput.getText().toString()); // On appele la fonction onParticipantsInput
                    CreateReunion(); // On crée la Reunion
                    finish(); // On termine l'activité Add Reunion
                }
-               else if(!reuRepo.checkForAvailableRoom(timeInput.getCurrentHour(),timeInput.getCurrentMinute(),duree, salle))
-               {
-                   Toast.makeText(getApplicationContext(), "Cette salle est déja prise à cet horaire", Toast.LENGTH_SHORT).show();
-               }
-               else
-               {
+               else {
                    Toast.makeText(getApplicationContext(), "Veuillez remplir tous les champs", Toast.LENGTH_SHORT).show();
-
-               }
-            }
+               } }
         });
         arrowBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,17 +124,18 @@ public class AddReunionActivity extends AppCompatActivity
 
 
     private void CreateReunion()
-    { /* On transfere les infos dans le constructeur de la Reunion
-     et on apelle le repository pour la créer */
-
+    {
+        String selectedMinuteString = String.format("%02d", timeInput.getCurrentMinute());
         Reunion reunion = new Reunion(
                 System.currentTimeMillis(),
                 sujetInput.getText().toString(),
                 salle,
                 selectedHour = timeInput.getCurrentHour(),
                 selectedMinute = timeInput.getCurrentMinute(),
+                month = datePicker.getMonth(),
+                day = datePicker.getDayOfMonth(),
                 duree,
-                name = Integer.toString(selectedHour) + "h" + Integer.toString(selectedMinute) + " - " + salle,
+                name = Integer.toString(selectedHour) + "h" + selectedMinuteString + " - " + salle,
                 participants
         );
         reuRepo.createReunion(reunion);
@@ -160,7 +159,7 @@ public class AddReunionActivity extends AppCompatActivity
             if (!participant.isEmpty()) // S'il n'est pas vide
             {
                 participants.add(participant);
-        // On l'ajoute dans la liste des participants qui est sera dans le constructeur de la réunion
+        // On l'ajoute dans la liste des participants
             }
         }
     }

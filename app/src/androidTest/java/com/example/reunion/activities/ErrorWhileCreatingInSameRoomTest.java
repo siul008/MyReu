@@ -27,10 +27,12 @@ import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
 
 import com.example.reunion.R;
+import com.example.reunion.service.ReunionRepository;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,7 +40,10 @@ import org.junit.runner.RunWith;
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class ErrorWhileCreatingInSameRoomTest {
-
+    @Before
+    public void setUp() throws Exception {
+        ReunionRepository.getInstance().clearReunions();
+    }
     @Rule
     public ActivityTestRule<MainMenuActivity> mActivityTestRule = new ActivityTestRule<>(MainMenuActivity.class);
 

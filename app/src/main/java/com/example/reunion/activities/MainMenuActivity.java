@@ -1,6 +1,5 @@
 package com.example.reunion.activities;
 
-import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -9,19 +8,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.LinearLayout;
+import android.widget.DatePicker;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.TimePicker;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -34,8 +28,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MainMenuActivity extends AppCompatActivity
@@ -48,6 +40,7 @@ public class MainMenuActivity extends AppCompatActivity
     private List<Reunion> mReunions;
     private RecyclerViewAdapterReunion mAdapter;
     Toolbar toolbar;
+    private DatePicker datePickerFiltre;
     private RelativeLayout filtreLayout;
     private MenuItem searchItem;
     private MenuItem cancelItem;
@@ -56,11 +49,16 @@ public class MainMenuActivity extends AppCompatActivity
 
     private Button heureFinBouton; // Pour le filtre
     private Button heureDebutBouton; // Pour le filtre
-    private String salle; // Pour le filtre
+    private String salle = null; // Pour le filtre
     private boolean isFiltering = false;
     private List<Reunion> mReunionsFiltered;
     private Integer filteredHourFin = null;
     private Integer filteredHourDebut = null;
+    private Integer filteredMonth = null;
+    private Integer filteredDay = null;
+    private Integer filteredYear = null;
+    private Button filtreButtonDate;
+    private Button filtreButtonsalle;
 
 
 
@@ -73,78 +71,36 @@ public class MainMenuActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_main_menu);
+        setContentView(R.layout.main_menu_activity);
 
                   /* Pour le filtre */
         filtreLayout = findViewById(R.id.filtre_layout);
-        heureFinBouton = findViewById(R.id.filtre_heure_fin);
-        filtreTextDebut = findViewById(R.id.text_filtre_heure_debut);
-        filtreTexteFin = findViewById(R.id.text_filtre_heure_fin);
+        datePickerFiltre = findViewById(R.id.filtre_date_picker);
+        filtreButtonDate = findViewById(R.id.filtre_button_date);
+        filtreButtonsalle = findViewById(R.id.filtre_button_salle);
 
-
-        heureFinBouton.setOnClickListener(new View.OnClickListener() {
+filtreButtonsalle.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
+        mReunionsFiltered = reuRepo.filterReunion
+                (filteredMonth = null ,filteredDay = null , salle);
+        innitList();
+    }
+});
+        filtreButtonDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MaterialTimePicker finPicker = new MaterialTimePicker.Builder()
-                        .setTimeFormat(TimeFormat.CLOCK_24H)
-                        .setHour(12)
-                        .setMinute(0)
-                        .setTitleText("Entrez l'heure de fin de la réunion")
-                        .build();
-                finPicker.addOnPositiveButtonClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        filteredHourFin = finPicker.getHour();
-                        filtreTexteFin.setText(Integer.toString(finPicker.getHour()) + " h");
-                    innitList();
-                    }
-                });
-                finPicker.addOnNegativeButtonClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        filtreTexteFin.setText("-");
-                        filteredHourFin = null;
-                        innitList();
-                    }
-                });
-                        finPicker.show(getSupportFragmentManager(), "Fin");
-            }
-
-        });
-
-        heureDebutBouton = findViewById(R.id.filtre_heure_debut);
-        heureDebutBouton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                MaterialTimePicker debutPicker = new MaterialTimePicker.Builder()
-                        .setTimeFormat(TimeFormat.CLOCK_24H)
-                        .setHour(12)
-                        .setMinute(0)
-                        .setTitleText("Entrez l'heure de début de la réunion")
-                        .build();
-                debutPicker.addOnPositiveButtonClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        filteredHourDebut = debutPicker.getHour();
-                        filtreTextDebut.setText(Integer.toString(debutPicker.getHour()) + " h");
-                        innitList();
-                    }
-                });
-                debutPicker.addOnNegativeButtonClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        filtreTextDebut.setText("-");
-                        filteredHourDebut = null;
-                        innitList();
-                    }
-                });
-                debutPicker.show(getSupportFragmentManager(),"Debut");
+                mReunionsFiltered = reuRepo.filterReunion
+                        (filteredMonth = datePickerFiltre.getMonth(),filteredDay = datePickerFiltre.getDayOfMonth() ,null);
+                innitList();
             }
         });
-        /* ************************************************* */
+
+
+
 
         reuRepo = ReunionRepository.getInstance(); // on accède a ReunionRepository grace au singleton
+        mReunionsFiltered = reuRepo.getReunions();
         createReuFab = findViewById(R.id.createReuFab); //Id du FAB
         mRecyclerView = findViewById(R.id.reunion_list_recyclerView);//Id du RecyclerView
         toolbar = findViewById(R.id.toolbar); //On identifie la toolbar
@@ -172,7 +128,7 @@ public class MainMenuActivity extends AppCompatActivity
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l)
             {
                 salle = adapterView.getItemAtPosition(i).toString();
-                innitList();
+               // innitList();
             }// On lui donne un OnItemSelectedListenner
 
             @Override
@@ -188,15 +144,16 @@ public class MainMenuActivity extends AppCompatActivity
    public void innitList()
     {
         setOnClickListener();
-        mReunions = reuRepo.getReunions(); // On Récupère les reunions dans mReunions
-
-
-        if(isFiltering) { //Filtre
-            mReunionsFiltered = reuRepo.filterReunion(filteredHourDebut,filteredHourFin,salle);
-            mAdapter = new RecyclerViewAdapterReunion(this, mReunionsFiltered, listener, deleteClickListenner);
+        mReunions = reuRepo.getReunions();
+        if(isFiltering) {
+           // mReunionsFiltered = reuRepo.filterReunion
+                    //(filteredMonth = datePickerFiltre.getMonth(),filteredDay = datePickerFiltre.getDayOfMonth() ,salle);
+            mAdapter = new RecyclerViewAdapterReunion
+                    (this, mReunionsFiltered, listener, deleteClickListenner);
         } //On update l'adapter avec les reunions filtré
         else {
-            mAdapter = new RecyclerViewAdapterReunion(this, mReunions /* Item Click */, listener, deleteClickListenner);
+            mAdapter = new RecyclerViewAdapterReunion
+                    (this, mReunions, listener, deleteClickListenner);
         } //On update l'adapter avec les reunions
         mRecyclerView.setAdapter(mAdapter); // On set l'adapter dans le recycler view
     }
@@ -251,7 +208,7 @@ public class MainMenuActivity extends AppCompatActivity
             case R.id.action_search:
             {
                 isFiltering = true;
-                innitList();
+               // innitList();
                 filtreLayout.setVisibility(View.VISIBLE);
                 cancelItem.setVisible(true);
                 break;

@@ -1,5 +1,6 @@
 package com.example.reunion.activities;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -22,7 +23,7 @@ import com.example.reunion.service.ReunionRepository;
 
 public class InfoDialog extends AppCompatDialogFragment
 {
-    public static InfoDialog newInstance(long id) { // On créer un bundle comme un intent mais pour fragment
+    public static InfoDialog newInstance(long id) {
 // On stock l'id de la reunion dans "reunionId"
         Bundle args = new Bundle();
         args.putLong("reunionId", id);
@@ -39,6 +40,7 @@ public class InfoDialog extends AppCompatDialogFragment
     private String selectedMinute;
     private String selectedHour;
 
+    @SuppressLint("SetTextI18n")
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState)
@@ -78,13 +80,13 @@ public class InfoDialog extends AppCompatDialogFragment
         heureText.setText("Heure : " + selectedHour + "h" + selectedMinute);
         dureeText.setText("Durée : " + r.getDureeReunion() + " minutes");
 
-        TextView textView = new TextView(view.getContext());
-        textView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        textView.setGravity(Gravity.CENTER);
-        textView.setText(r.getParticipantList().toString());
-        textView.setTextSize(15);
-        textView.setPadding(10,0,0,0);
-            linearLayout.addView(textView);
+        TextView participantText = new TextView(view.getContext());
+        participantText.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        participantText.setGravity(Gravity.CENTER);
+        participantText.setText(r.getParticipantList().toString());
+        participantText.setTextSize(15);
+        participantText.setPadding(10,0,0,0);
+            linearLayout.addView(participantText);
 
         return builder.create();
     }

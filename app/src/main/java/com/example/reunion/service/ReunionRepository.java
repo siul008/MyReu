@@ -79,46 +79,20 @@ public class ReunionRepository {
     }
 
 
-    public List<Reunion> filterReunion(Integer hourDebut, Integer hourFin, String salle) {
+    public List<Reunion> filterReunion(Integer month, Integer day, String salle) {
         List<Reunion> filteredList = new ArrayList<>();
 
 
         for (Reunion reunion : reunionsList) {
             if (salle != null && !salle.equals("-") && reunion.getSalle().contains(salle))
             {
-                   if(hourFin != null && hourDebut != null && reunion.getSelectedHour() >= hourDebut && reunion.getSelectedHour() < hourFin)
-                   {
-                       filteredList.add(reunion);
-                   }
-                   else if(hourFin != null && hourDebut == null && reunion.getSelectedHour() < hourFin)
-                   {
-                       filteredList.add(reunion);
-                   }
-                   else if(hourFin == null && hourDebut != null && reunion.getSelectedHour() >= hourDebut)
-                   {
-                       filteredList.add(reunion);
-                   }
-                   else if(hourFin == null && hourDebut == null)
-                   {
-                       filteredList.add(reunion);
-                   }
-            }
-            else if (salle == null || salle.equals("-"))
+                    filteredList.add(reunion);
+                }
+            else if (month != null && month == reunion.getMonth() && day != null && day == reunion.getDay())
             {
-                if(hourFin != null && hourDebut != null && reunion.getSelectedHour() >= hourDebut && reunion.getSelectedHour() < hourFin)
-                {
-                    filteredList.add(reunion);
-                }
-                else if(hourFin != null && hourDebut == null && reunion.getSelectedHour() < hourFin)
-                {
-                    filteredList.add(reunion);
-                }
-                else if(hourFin == null && hourDebut != null && reunion.getSelectedHour() >= hourDebut)
-                {
                     filteredList.add(reunion);
                 }
             }
-        }
         return filteredList;
     }
 

@@ -13,9 +13,11 @@ public class Reunion
   private String name;
   private List<String> participantList = new ArrayList<>();
   private String dureeReunion;
+  private int month;
+  private int day;
 
 
-public Reunion(long mId, String mSujet, String mSalle, int mSelectedHour, int mSelectedMinute, String mDuree, String mName, List<String> mParticipantList)
+public Reunion(long mId, String mSujet, String mSalle, int mSelectedHour, int mSelectedMinute,int mMonth, int mDay, String mDuree, String mName, List<String> mParticipantList)
 {
   this.salle = mSalle;
   this.sujet = mSujet;
@@ -25,6 +27,8 @@ public Reunion(long mId, String mSujet, String mSalle, int mSelectedHour, int mS
   this.selectedMinute = mSelectedMinute;
   this.selectedHour = mSelectedHour;
   this.participantList = mParticipantList;
+  this.month = mMonth;
+  this.day = mDay;
 }
   public int getSelectedHour() {
     return selectedHour;
@@ -88,6 +92,14 @@ public Reunion(long mId, String mSujet, String mSalle, int mSelectedHour, int mS
 
   public List<String> getParticipantList() {
     return participantList;
+  }
+
+  public int getMonth() {
+    return month;
+  }
+
+  public int getDay() {
+    return day;
   }
 
   public String getParticipantToString()
